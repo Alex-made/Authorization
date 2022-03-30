@@ -1,0 +1,16 @@
+﻿{
+ 
+  "profiles": {
+    
+    "AuthorizationJwtBearer": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5000",
+      "launchUrl": "home/index",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

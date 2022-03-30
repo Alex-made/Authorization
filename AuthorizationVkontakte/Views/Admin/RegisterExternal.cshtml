@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model AuthorizationVkontakte.Controllers.ExternalLoginViewModel
+
+<h1>External registration</h1>
+
+<form asp-controller="Admin" asp-action="RegisterExternal" method="post">
+    <input hidden asp-for="ReturnUrl" />
+    <div>
+        <label>Username</label>
+        <input asp-for="Username" />
+    </div>
+
+    <button type="submit">Войти</button>
+</form>
