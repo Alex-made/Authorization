@@ -19,7 +19,7 @@ namespace AuthorizationJwtBearer.Controllers
 			return View();
 		}
 
-		[Authorize]
+		//[Authorize]
 		public IActionResult Secret()
 		{
 			return View();
