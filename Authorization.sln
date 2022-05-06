@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreIdentit_JWT не 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Не доделанное", "Не доделанное", "{7B630CF5-0AC7-444A-9CE9-70D2CA76B970}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Инфраструктура со своим Identity сервером", "Инфраструктура со своим Identity сервером", "{A7831A7E-96FF-4CF0-9C3D-04502E4EB497}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Инфраструктура со своим Identity сервером (JWT с ролями)", "Инфраструктура со своим Identity сервером (JWT с ролями)", "{A7831A7E-96FF-4CF0-9C3D-04502E4EB497}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecretApiSample", "SecretApiSample\SecretApiSample.csproj", "{2A66DD82-4BB4-4197-8AFD-F2B08F2D87A4}"
 EndProject

@@ -31,7 +31,7 @@ namespace AspNetCoreIdentity
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			//Доб. польз-ль: New@new.ru 1qAZ2wSXSmir!
+			//Доб. польз-ль: New@new.ru 1qAZ
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));

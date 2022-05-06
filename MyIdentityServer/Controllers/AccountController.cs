@@ -35,13 +35,13 @@ namespace MyIdentityServer.Controllers
             new Person { Login="qwerty@gmail.com", Password="55555", Role = "user" }
         };
 
-        //Дай мне токен по логину/паролю
+        //Дай мне токен по логину/паролю. Уже есть пользователь new@new.ru 1qAZ
         [HttpPost("token")]
         public async Task<IActionResult> Token(string username, string password)
         {
 			//Принцип создания ClaimsIdentity здесь тот же, что и при аутентификации с помощью кук: создается набор объектов Claim,
             //которые включают различные данные о пользователе, например, логин, роль и т.д.
-            var identity = await GetIdentity(username);
+            var identity = await GetIdentity(username, password);
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
@@ -67,32 +67,43 @@ namespace MyIdentityServer.Controllers
             return Json(response);
         }
 
-        private async Task<ClaimsIdentity> GetIdentity(string username)
+        private async Task<ClaimsIdentity> GetIdentity(string username, string password)
         {
 			var person = await _userManager.FindByNameAsync(username);
-			var roles = await _userManager.GetRolesAsync(person);
-			if (person != null)
+			
+			if (person == null)
 			{
-				var roleClaims = new List<Claim>();
-				foreach (var role in roles)
-				{
-					roleClaims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, role));
-				}
-
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.UserName),
-				};
-                claims.AddRange(roleClaims);
-
-                ClaimsIdentity claimsIdentity =
-                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                    ClaimsIdentity.DefaultRoleClaimType);
-                return claimsIdentity;
+				// если пользователя не найдено
+				return null;
             }
 
-            // если пользователя не найдено
-            return null;
+			var signInResult = await _signInManager.PasswordSignInAsync(person, password, false, false);
+			if (!signInResult.Succeeded)
+			{
+				throw new Exception($"Не удалось аутентифицировать пользователя {person.UserName}");
+			}
+
+            var roles = await _userManager.GetRolesAsync(person);
+			
+
+			var roleClaims = new List<Claim>();
+			foreach (var role in roles)
+			{
+				roleClaims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, role));
+			}
+
+			var claims = new List<Claim>
+			{
+				new Claim(ClaimsIdentity.DefaultNameClaimType, person.UserName),
+			};
+			claims.AddRange(roleClaims);
+
+			ClaimsIdentity claimsIdentity =
+				new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+								   ClaimsIdentity.DefaultRoleClaimType);
+			return claimsIdentity;
+
+            
         }
     }
 }
