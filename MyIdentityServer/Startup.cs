@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using MyIdentityServer.Dal;
 
 namespace MyIdentityServer
 {
@@ -20,6 +23,22 @@ namespace MyIdentityServer
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddDbContext<ApplicationDbContext>(options =>
+															options.UseSqlServer(
+																Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddIdentity<IdentityUser, IdentityRole>(options =>
+					{
+						options.SignIn.RequireConfirmedAccount = false;   //иначе не зайдет при неподтвержденной учетке
+						options.Password.RequiredLength = 3;   // минимальная длина
+						options.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
+						options.Password.RequireLowercase = false; // требуются ли символы в нижнем регистре
+						options.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
+						options.Password.RequireDigit = false; // требуются ли цифры
+					})
+					.AddEntityFrameworkStores<ApplicationDbContext>();
+
+			//тут добавляется надстройка для авторизации при обращении к локальным сектерным методам контрллеров (доступ по ролям в данном случае)
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 					.AddJwtBearer(options =>
 					{
