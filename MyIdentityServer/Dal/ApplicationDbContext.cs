@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MyIdentityServer.Domain;
 
 namespace MyIdentityServer.Dal
 {
@@ -9,5 +10,7 @@ namespace MyIdentityServer.Dal
 			: base(options)
 		{
 		}
+
+		public DbSet<RefreshToken> RefreshTokens { get; set; }
 	}
 }
