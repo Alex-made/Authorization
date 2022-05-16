@@ -22,7 +22,8 @@ namespace MyIdentityServer
 				{
 					var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 					var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-					await UserInitializer.InitializeAsync(userManager, rolesManager);
+					// Начальная инициализация отключена
+					//await UserInitializer.InitializeAsync(userManager, rolesManager);
 				}
 				catch (Exception ex)
 				{

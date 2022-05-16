@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyIdentityServer.ViewModels;
@@ -15,6 +16,7 @@ namespace MyIdentityServer.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Index() => View(_userManager.Users.ToList());
 
         public IActionResult Create() => View();

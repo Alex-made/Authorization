@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
- 
-namespace AspNetCoreIdentity.ViewModels
+
+namespace MyIdentityServer.ViewModels
 {
 	public class RegisterUserViewModel
 	{
