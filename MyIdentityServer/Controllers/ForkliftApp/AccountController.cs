@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -12,8 +13,7 @@ using MyIdentityServer.Dal;
 using MyIdentityServer.Domain;
 using MyIdentityServer.Dto;
 using MyIdentityServer.Models;
-
-// класс Person
+using MyIdentityServer.ViewModels;
 
 namespace MyIdentityServer.Controllers
 {
@@ -36,13 +36,6 @@ namespace MyIdentityServer.Controllers
 			_signInManager = signInManager;
 			_dbContext = dbContext;
 		}
-
-        // тестовые данные вместо использования базы данных
-        private List<Person> people = new List<Person>
-        {
-            new Person {Login="admin@gmail.com", Password="12345", Role = "admin" },
-            new Person { Login="qwerty@gmail.com", Password="55555", Role = "user" }
-        };
 
 		//Дай мне новую пару токен/refresh-токен по логину/паролю. Уже есть пользователь new@new.ru 1qAZ
 		[HttpPost("refresh")]
@@ -113,12 +106,13 @@ namespace MyIdentityServer.Controllers
 		}
 
 		//Дай мне пару токен/refresh-токен по логину/паролю. Уже есть пользователь new@new.ru 1qAZ
+		//Этот endpoint оставлю для api. Для регистрации/логина клиента сделаю новый со схожим функционалом.
 		[HttpPost("token")]
-        public async Task<IActionResult> Token(string username, string password)
+        public async Task<IActionResult> Token(LoginUserRequest loginRequest)
         {
 			//Принцип создания ClaimsIdentity здесь тот же, что и при аутентификации с помощью кук: создается набор объектов Claim,
 			//которые включают различные данные о пользователе, например, логин, роль и т.д.
-			var user = await _userManager.FindByNameAsync(username);
+			var user = await _userManager.FindByNameAsync(loginRequest.Email);
 
 			if (user == null)
 			{
@@ -126,7 +120,7 @@ namespace MyIdentityServer.Controllers
 				return null;
 			}
 
-			var identity = await GetIdentity(user, password);
+			var identity = await GetIdentity(user, loginRequest.Password);
             if (identity == null)
             {
                 return BadRequest(new { errorText = "Invalid username or password." });
@@ -164,7 +158,7 @@ namespace MyIdentityServer.Controllers
 			return Json(response);
         }
 
-        private async Task<ClaimsIdentity> GetIdentity(IdentityUser user, string password)
+		private async Task<ClaimsIdentity> GetIdentity(IdentityUser user, string password)
         {
 			var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
 			if (!signInResult.Succeeded)

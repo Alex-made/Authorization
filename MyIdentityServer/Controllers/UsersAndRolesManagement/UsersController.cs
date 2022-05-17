@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyIdentityServer.ViewModels;
 
-namespace MyIdentityServer.Controllers
+namespace MyIdentityServer.Controllers.UsersAndRolesManagement
 {
+	[Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         UserManager<IdentityUser> _userManager;
@@ -16,12 +17,11 @@ namespace MyIdentityServer.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "Admin")]
         public IActionResult Index() => View(_userManager.Users.ToList());
 
-        public IActionResult Create() => View();
+		public IActionResult Create() => View();
 
-        [HttpPost]
+		[HttpPost]
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
             if (ModelState.IsValid)

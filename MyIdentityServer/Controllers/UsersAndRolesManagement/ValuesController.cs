@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MyIdentityServer.Controllers
+namespace MyIdentityServer.Controllers.UsersAndRolesManagement
 {
 	//Локальный контроллер, куда можно ходить, получив токен через AccountController
 	[ApiController]
