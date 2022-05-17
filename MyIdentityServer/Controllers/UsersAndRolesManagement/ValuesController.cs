@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MyIdentityServer.Controllers.UsersAndRolesManagement
 {
-	//Локальный контроллер, куда можно ходить, получив токен через AccountController
+	//Локальный контроллер, куда можно ходить аутентифицировавшись по схеме Cookies
 	[ApiController]
 	[Route("api/[controller]")]
 	public class ValuesController : Controller

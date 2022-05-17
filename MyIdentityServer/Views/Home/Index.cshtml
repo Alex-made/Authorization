@@ -1,8 +1,27 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @foreach (var user in Model)
+    {
+        <p>@user.UserName</p>
+    }
 </div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>@User.Identity.Name</p>
+
+    <form method="post" asp-controller="UserManagerAccount" asp-action="Logout">
+        <input type="submit" value="Выход" />
+    </form>
+}
+else
+{
+    <a asp-controller="UserManagerAccount" asp-action="Login">Вход</a>
+    <a asp-controller="UserManagerAccount" asp-action="Register">Регистрация</a>
+}
