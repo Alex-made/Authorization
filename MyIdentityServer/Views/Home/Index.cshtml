@@ -19,6 +19,9 @@
     <form method="post" asp-controller="UserManagerAccount" asp-action="Logout">
         <input type="submit" value="Выход" />
     </form>
+    
+    <a class="btn btn-sm btn-primary" asp-controller="Users" asp-action="Index">Пользователи</a>
+    <a class="btn btn-sm btn-primary"  asp-controller="Roles" asp-action="Index">Роли</a>
 }
 else
 {

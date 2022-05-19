@@ -73,7 +73,7 @@ namespace MyIdentityServer
 			services.ConfigureApplicationCookie(options =>
 			{
 				options.LoginPath = "/UserManagerAccount/LogIn";
-				//options.Cookie.Expiration = TimeSpan.FromHours(1);
+				options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
 			});
 			services.AddControllersWithViews();
 		}
