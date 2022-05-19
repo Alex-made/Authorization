@@ -32,15 +32,16 @@ namespace MyIdentityServer
 
 			services.AddIdentity<IdentityUser, IdentityRole>(options =>
 					{
-						options.SignIn.RequireConfirmedAccount = false;   //иначе не зайдет при неподтвержденной учетке
-						options.Password.RequiredLength = 3;   // минимальная длина
-						options.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
+						options.SignIn.RequireConfirmedAccount = false; //иначе не зайдет при неподтвержденной учетке
+						options.Password.RequiredLength = 3; // минимальная длина
+						options.Password.RequireNonAlphanumeric = false; // требуются ли не алфавитно-цифровые символы
 						options.Password.RequireLowercase = false; // требуются ли символы в нижнем регистре
 						options.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
 						options.Password.RequireDigit = false; // требуются ли цифры
 					})
-					.AddEntityFrameworkStores<ApplicationDbContext>();
-			
+					.AddEntityFrameworkStores<ApplicationDbContext>()
+					.AddDefaultTokenProviders(); //регаем провайдеры, чтобы работало GeneratePasswordResetTokenAsync;
+
 			////тут добавляется надстройка для авторизации при обращении к локальным сектерным методам контрллеров (доступ по ролям в данном случае)
 			/// в данном случае она не нужна, т.к. в MyIdentityServer применяется аутентифкация по кукам в клиенском приложении по управлению пользовтелями и ролями,
 			/// а JWt используется в клиентском angular-приложении для того, чтобы ходить на другие сервисы.

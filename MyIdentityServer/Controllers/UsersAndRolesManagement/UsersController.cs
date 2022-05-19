@@ -94,6 +94,48 @@ namespace MyIdentityServer.Controllers.UsersAndRolesManagement
             return RedirectToAction("Index");
         }
 
+		public async Task<IActionResult> ResetPassword(string id)
+		{
+			var user = await _userManager.FindByIdAsync(id);
+			if (user == null)
+			{
+				return NotFound();
+			}
+			var model = new ResetPasswordViewModel { Id = user.Id, Email = user.Email };
+			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByIdAsync(model.Id);
+				if (user != null)
+				{
+					string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+					var passwordChangeResult = await _userManager.ResetPasswordAsync(user, resetToken, model.NewPassword);
+
+					if (passwordChangeResult.Succeeded)
+					{
+						return RedirectToAction("Index");
+					}
+					else
+					{
+						foreach (var error in passwordChangeResult.Errors)
+						{
+							ModelState.AddModelError(string.Empty, error.Description);
+						}
+					}
+				}
+				else
+				{
+					ModelState.AddModelError(string.Empty, "Пользователь не найден");
+				}
+			}
+			return View(model);
+		}
+
 		public async Task<IActionResult> ChangePassword(string id)
 		{
 			var user = await _userManager.FindByIdAsync(id);
@@ -105,7 +147,7 @@ namespace MyIdentityServer.Controllers.UsersAndRolesManagement
 			return View(model);
 		}
 
-        [HttpPost]
+		[HttpPost]
 		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
 		{
 			if (ModelState.IsValid)

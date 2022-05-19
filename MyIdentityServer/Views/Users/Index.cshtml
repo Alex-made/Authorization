@@ -15,6 +15,7 @@
                 <form asp-action="Delete" asp-route-id="@user.Id" method="post">
                     <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
                     <a class="btn btn-sm btn-primary" asp-action="ChangePassword" asp-route-id="@user.Id">Сменить пароль</a>
+                    <a class="btn btn-sm btn-primary" asp-action="ResetPassword" asp-route-id="@user.Id">Сбросить пароль</a>
                     <button type="submit" class="btn btn-sm btn-danger">
                         Удалить
                     </button>
